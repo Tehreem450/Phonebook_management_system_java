@@ -1,0 +1,130 @@
+
+import java.util.ArrayList; 
+import java.util.*;
+import java.io.*;
+
+public class Phonebook {
+	private ArrayList<Contacts> myContacts = new ArrayList<Contacts>();
+        
+        public void contactsFromFile() throws FileNotFoundException, IOException{
+            BufferedReader br = null;
+            File f = new File("C:\\Users\\Computer World\\Desktop\\netbeans project\\phonebookProject\\src\\ContactList.txt");
+                    br = new BufferedReader(new FileReader(f));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                            String abc[] = new String[4];
+                            abc = line.split(" -> ");
+                            String name = abc[0];
+                            String phone = abc[1].split("-")[0];
+                            String home = abc[2].split("-")[0];
+                            String adress = abc[3];
+                            Contacts contact = new Contacts(name, phone, home, adress);
+                            this.myContacts.add(contact);
+                        }
+                    br.close();
+        }
+	// Adding a new contact
+	public boolean addNewContact(Contacts contact) {
+            
+		// Before adding a contact we are checking that its exist or not
+		if(findindex(contact.getName()) >= 0) {
+                        return false;
+		}
+                else{
+                    //If Not exist then add our contact
+                    myContacts.add(contact);
+                    return true;
+                }
+	}
+           
+	//Update Contact using set method
+	public boolean updateContact(Contacts oldContact , Contacts newContact) {
+		int foundPosition = this.myContacts.indexOf(oldContact);
+		if(foundPosition < 0) {
+			return false;
+		}
+                else{
+                    this.myContacts.set(foundPosition, newContact);
+                    return true;
+                }
+	}
+	
+	// Remove Contact
+	public boolean removeContact(Contacts contact) {
+		int foundPosition = this.myContacts.indexOf(contact);
+		if(foundPosition < 0) {
+			return false;
+		}
+                else{
+                    this.myContacts.remove(foundPosition);
+                    return true;
+                }
+	}
+	
+	// Find Contact Names
+	private int findindex(String key) {
+                int i;
+		for(i =0; i < myContacts.size(); i++) {
+			 // Creating another temporary object to hold the name and compare
+			 Contacts contact = this.myContacts.get(i);
+			 if(contact.getName().trim().toLowerCase().startsWith(key.toLowerCase().trim()) || 
+                                 (contact.getPhone().startsWith(key.trim())) ||
+                                 (contact.getAdress().trim().toLowerCase().startsWith(key.toLowerCase().trim())) ||
+                                 (contact.getHome().trim().toLowerCase().startsWith(key.toLowerCase().trim()))){
+				 return i;
+			}
+		 }
+                 return -1;
+	}
+	
+	public Contacts searchContact(String key) {
+		int position = findindex(key);
+		if(position >=0) {
+			return this.myContacts.get(position);
+		}
+                else{
+                    return null;
+                }
+        }
+	
+        public void saveContactsIntoFile() throws IOException{
+            File F = new File("C:\\Users\\Computer World\\Desktop\\netbeans project\\phonebookProject\\src\\ContactList.txt");
+            PrintStream P = new PrintStream(F);
+            for(int i = 0; i < this.myContacts.size(); i++) {
+			P.println(this.myContacts.get(i).getName() + " -> " + this.myContacts.get(i).getPhone()
+                        + " -> " +this.myContacts.get(i).getHome() + " -> " + this.myContacts.get(i).getAdress());
+            }
+            P.close();
+        }
+        
+        public void sort(){
+            ArrayList<Contacts> contacts = (ArrayList<Contacts>) this.myContacts.clone();
+            contacts.sort(Comparator.comparing(Contacts :: getName));
+            System.out.println("The alphabetically sorted view of your phonebook:");
+		for(int i = 0; i < contacts.size(); i++) {
+                    System.out.println((i+1) + ") Name: " + contacts.get(i).getName() + " -> Phone: " + contacts.get(i).getPhone()
+                        + " -> Home: " + contacts.get(i).getHome() + " -> Adress: " + contacts.get(i).getAdress());
+                }
+        }
+        
+        public void stack(){
+            Stack<Contacts> stack = new Stack<Contacts>();
+            for(int i = 0; i < this.myContacts.size(); i++) {
+                stack.push(this.myContacts.get(i));
+            }
+            for(int i = 0; i < this.myContacts.size(); i++) {
+                Contacts contact = stack.pop();
+                System.out.println((i+1) + ") Name: " + contact.getName() + " -> Phone: " + contact.getPhone()
+                + " -> Home: " + contact.getHome() + " -> Adress: " + contact.getAdress());
+            }
+        }
+        
+	public void printContacts() {
+		System.out.println("Your Phonebook has "+this.myContacts.size()+" Contacts!");
+		for(int i = 0; i < this.myContacts.size(); i++) {
+			System.out.println((i+1) + ") Name: " + this.myContacts.get(i).getName() + " -> Phone: " +
+                                this.myContacts.get(i).getPhone() + " -> Home: " + this.myContacts.get(i).getHome() + 
+                                " -> Adress: " + this.myContacts.get(i).getAdress());
+                }
+	}
+}

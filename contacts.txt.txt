@@ -1,0 +1,62 @@
+
+public class Contacts {
+	private String name;
+	private String phone;
+        private String home;
+	private String adress;
+	public Contacts(String name, String phone, String home, String adress) {
+		this.name = name;
+		this.adress = adress;
+                
+                if(phone.startsWith("031")){
+                    this.phone = phone+"-Zong ";
+                }
+                else if(phone.startsWith("033")){
+                    this.phone = phone+"-Ufone ";
+                }
+                else if(phone.startsWith("032")){
+                    this.phone = phone+"-Warid ";
+                }
+                else if(phone.startsWith("030")){
+                    this.phone = phone+"-Jazz ";
+                }
+                else if(phone.startsWith("034")){
+                    this.phone = phone+"-Telenor ";
+                }
+                else {
+                    this.phone = phone+"-Sim ";
+                }
+                
+                if(home.startsWith("031")){
+                    this.home = home+"-Zong ";
+                }
+                else if(home.startsWith("033")){
+                    this.home = home+"-Ufone ";
+                }
+                else if(home.startsWith("032")){
+                    this.home = home+"-Warid ";
+                }
+                else if(home.startsWith("030")){
+                    this.home = home+"-Jazz ";
+                }
+                else if(home.startsWith("034")){
+                    this.home = home+"-Telenor ";
+                }
+                else {
+                    this.home = home+"-Sim ";
+                }
+	}
+        
+	public String getName() {
+		return name;
+	}
+	public String getPhone() {
+		return phone;
+	}
+        public String getHome() {
+		return home;
+	}
+        public String getAdress() {
+		return adress;
+	}
+}
